@@ -5,12 +5,14 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "firebase": "^4.5.0",
+    "localforage": "^1.5.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-infinite": "^0.12.1",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
+    "redux-persist": "^4.10.1",
     "redux-thunk": "^2.2.0",
     "seamless-immutable": "^7.1.2"
   },
