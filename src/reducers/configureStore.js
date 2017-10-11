@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage from 'localforage';
@@ -9,8 +9,12 @@ import itemsReducer from './items/reducer';
 // Store initiator
 export function configureStore(onCompletion) {
   const store = createStore(
-    applyMiddleware(thunk),
-    autoRehydrate()
+    itemsReducer,
+    undefined,
+    compose(
+      applyMiddleware(thunk),
+      autoRehydrate()
+    )
   );
 
   const persistor = persistStore(store, { storage: localForage }, onCompletion);

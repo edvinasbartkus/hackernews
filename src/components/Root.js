@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import App from './../App';
+import ItemsList from './ItemsList';
 import { Provider } from 'react-redux';
 import { configureStore } from './../reducers/configureStore';
-import './../index.css';
 
 export default class Root extends Component {
   constructor(props) {
@@ -29,13 +28,12 @@ export default class Root extends Component {
   renderApp() {
     return (
       <Provider store={this.store} persistor={this.persistor}>
-        <App />
+        <ItemsList />
       </Provider>
     )
   }
 
   render() {
-    debugger;
     return this.state.isLoading ? this.renderLoading() : this.renderApp();
   }
 }

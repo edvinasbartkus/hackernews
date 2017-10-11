@@ -6,29 +6,27 @@ export function fetchLatest() {
     dispatch({ type: types.LATEST_FETCH })
     Firebase.database()
             .ref('v0/newstories')
-            .limitToFirst(100)
+            .limitToFirst(10)
             .once('value', snap => {
               const ids = snap.val();
               dispatch({ type: types.LATEST_SUCCESS, payload: ids });
-              _onFetchLatest(ids)
+              _onFetchLatest(dispatch, ids)
             });
   }
 }
 
 // Private functions
 
-function _onFetchLatest(ids) {
-  ids.forEach(id => _fetchItem(id));
+function _onFetchLatest(dispatch, ids) {
+  ids.forEach(id => _fetchItem(dispatch, id));
 }
 
-function _fetchItem(id) {
-  return dispatch => {
-    Firebase.database()
-            .ref('v0/item')
-            .child(id)
-            .once('value', snap => {
-              const item = snap.val();
-              dispatch({ type: types.ITEM_SUCCESS, payload: item });
-            });
-  }
+function _fetchItem(dispatch, id) {
+  Firebase.database()
+          .ref('v0/item')
+          .child(id)
+          .once('value', snap => {
+            const item = snap.val();
+            dispatch({ type: types.ITEM_SUCCESS, payload: item });
+          });
 }
