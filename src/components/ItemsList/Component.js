@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import InfiniteScroll from 'react-infinite-scroller';
 import * as itemsActions from './../../reducers/items/actions';
+import moment from 'moment';
 
 export default class ItemsList extends Component {
   componentDidMount() {
@@ -22,7 +23,7 @@ export default class ItemsList extends Component {
             <li key={`item_${index}`}>
               <a href={item.url || `https://news.ycombinator.com/item?id=${item.id}`} target="_blank">
                 {item.title}
-              </a> {item.by}
+              </a> {item.by} {moment(new Date(item.time * 1000)).format("YYYY-MM-DD HH:ss")}
             </li>
           )
         )
