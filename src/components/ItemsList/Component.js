@@ -8,7 +8,9 @@ export default class ItemsList extends Component {
   }
 
   onEndReached() {
-    
+    if (!this.props.isLoading && this.props.items.length > 0) {
+      this.props.dispatch(itemsActions.searchForStories());
+    }
   }
 
   renderItems() {
@@ -19,8 +21,8 @@ export default class ItemsList extends Component {
           (
             <li key={`item_${index}`}>
               <a href={item.url || `https://news.ycombinator.com/item?id=${item.id}`} target="_blank">
-                {item.id} 🙎‍♂️ {item.by} 📃 {item.title}
-              </a>
+                {item.title}
+              </a> {item.by}
             </li>
           )
         )

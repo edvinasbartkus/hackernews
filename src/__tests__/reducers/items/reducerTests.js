@@ -34,7 +34,7 @@ describe('Items reducer', () => {
     expect(reducer(state, action)).toEqual({
       ids: [ 1, 1, 2, 3 ],
       items: [],
-      isLoading: false
+      isLoading: true
     });
   });
 
@@ -59,6 +59,40 @@ describe('Items reducer', () => {
         { title: 'Second world' }
       ],
       isLoading: false
+    });
+  });
+
+  it('should handle LOADING_START', () => {
+    const state = {
+      isLoading: false
+    };
+
+    const action = { type: types.LOADING_START };
+    expect(reducer(state, action)).toEqual({
+      isLoading: true
+    });
+  });
+
+  it('should handle LOADING_STOP', () => {
+    const state = {
+      isLoading: true
+    };
+
+    const action = { type: types.LOADING_STOP };
+    expect(reducer(state, action)).toEqual({
+      isLoading: false
+    });
+  });
+
+  it('should handle RESET', () => {
+    const state = {
+      ids: [ 1, 2 ],
+      items: [ 1, 2, 3 ]
+    };
+
+    expect(reducer(state, { type: types.RESET })).toEqual({
+      ids: [],
+      items: []
     });
   });
 });

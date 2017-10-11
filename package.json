@@ -14,7 +14,8 @@
     "redux": "^3.7.2",
     "redux-persist": "^4.10.1",
     "redux-thunk": "^2.2.0",
-    "seamless-immutable": "^7.1.2"
+    "seamless-immutable": "^7.1.2",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

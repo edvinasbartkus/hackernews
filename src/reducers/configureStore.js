@@ -17,6 +17,6 @@ export function configureStore(onCompletion) {
     )
   );
 
-  const persistor = persistStore(store, { storage: localForage }, onCompletion).purge();
+  const persistor = persistStore(store, { storage: localForage }, onCompletion);
   return { store, persistor };
 }

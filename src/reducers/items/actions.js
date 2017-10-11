@@ -1,32 +1,57 @@
 import Firebase from './../../utils/Firebase';
 import * as types from './types';
+import _ from 'underscore';
+import Promise from 'bluebird';
 
 export function fetchLatest() {
   return dispatch => {
     dispatch({ type: types.LATEST_FETCH })
     Firebase.database()
             .ref('v0/newstories')
-            .limitToFirst(10)
             .once('value', snap => {
-              const ids = snap.val();
-              dispatch({ type: types.LATEST_SUCCESS, payload: ids });
-              _onFetchLatest(dispatch, ids)
+              dispatch({ type: types.RESET });
+              _handleIds(dispatch, snap.val());
             });
   }
 }
 
-// Private functions
+export function searchForStories() {
+  return (dispatch, getState) => {
+    dispatch({ type: types.LOADING_START });
 
-function _onFetchLatest(dispatch, ids) {
-  ids.forEach(id => _fetchItem(dispatch, id));
+    const ids = getState().ids;
+    const latest = _.min(ids) - 1;
+
+    _handleIds(dispatch, Array.from(Array(200).keys()).map(i => latest - i));
+  }
 }
 
-function _fetchItem(dispatch, id) {
+// Private functions; exported for testing
+export function _handleIds(dispatch, ids) {
+  const promises = ids.map(id => {
+    return new Promise((resolve, reject) => {
+      _fetchItem(dispatch, id, resolve);
+    });
+  });
+
+  Promise.all(promises)
+         .then((ids) => {
+           dispatch({ type: types.LATEST_SUCCESS, payload: ids });
+           dispatch({ type: types.LOADING_STOP });
+          })
+         .done();
+}
+
+function _fetchItem(dispatch, id, resolve) {
   Firebase.database()
           .ref('v0/item')
           .child(id)
           .once('value', snap => {
             const item = snap.val();
-            dispatch({ type: types.ITEM_SUCCESS, payload: item });
+            if (item && !item.parent && item.title) {
+              dispatch({ type: types.ITEM_SUCCESS, payload: item });
+            }
+
+            resolve(item.id);
           });
 }
