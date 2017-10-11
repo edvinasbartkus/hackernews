@@ -21,7 +21,7 @@ export default class Root extends Component {
 
   renderLoading() {
     return (
-      <span>Loading...</span>
+      <p>Loading...</p>
     )
   }
 

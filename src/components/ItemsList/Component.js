@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import InfiniteScroll from 'react-infinite-scroller';
 import * as itemsActions from './../../reducers/items/actions';
 import moment from 'moment';
+import './Style.css';
 
 export default class ItemsList extends Component {
   componentDidMount() {
@@ -38,7 +39,7 @@ export default class ItemsList extends Component {
         pageStart={0}
         loadMore={() => this.onEndReached()}
         hasMore={true}
-        loader={this.props.isLoading ? <span>⏳</span> : undefined}
+        loader={this.props.isLoading ? <span className="loading" role="img" aria-label="loading">⏳</span> : undefined}
       >
         {this.renderItems()}
       </InfiniteScroll>
