@@ -1,5 +1,6 @@
 import * as types from './types';
 import Immutable from 'seamless-immutable';
+import Tools from './../../utils/Tools';
 
 const initialState = Immutable({
   ids: [],
@@ -32,7 +33,7 @@ export default function(state = initialState, action) {
       }
 
       return Immutable.merge(state, {
-        items: state.items.concat([ action.payload ])
+        items: Tools.merge(state.items, [ action.payload ], 'id')
       });
 
     case types.LOADING_START:

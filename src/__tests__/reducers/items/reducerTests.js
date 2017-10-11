@@ -42,23 +42,46 @@ describe('Items reducer', () => {
     const state = {
       ids: [],
       items: [
-        { title: 'Hello world!' }
+        { id: 1, title: 'Hello world!' }
       ],
       isLoading: false
     }
 
     const action = {
       type: types.ITEM_SUCCESS,
-      payload: { title: 'Second world' }
+      payload: { id: 2, title: 'Second world' }
     }
 
     expect(reducer(state, action)).toEqual({
       ids: [],
       items: [
-        { title: 'Hello world!' },
-        { title: 'Second world' }
+        { id: 1, title: 'Hello world!' },
+        { id: 2, title: 'Second world' }
       ],
       isLoading: false
+    });
+  });
+
+  it('should not add duplicates via ITEM_SUCCESS', () => {
+    const state = {
+      ids: [],
+      items: [
+        { id: 1, title: 'My name is Ed' },
+        { id: 2, title: 'Hello world!' }
+      ]
+    };
+
+    const action = {
+      type: types.ITEM_SUCCESS,
+      payload: { id: 2, title: 'Second hello' }
+    }
+
+    expect(reducer(state, action)).toEqual({
+      ids: [],
+      items: [
+        { id: 1, title: 'My name is Ed' },
+        { id: 2, title: 'Second hello' }
+      ]
     });
   });
 
