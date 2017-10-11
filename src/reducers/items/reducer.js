@@ -23,7 +23,7 @@ export default function(state = initialState, action) {
 
     case types.ITEM_SUCCESS:
       return Object.assign({}, state, {
-        item: state.items.concat([ action.payload ])
+        items: state.items.concat([ action.payload ])
       });
 
     default: return state;
