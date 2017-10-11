@@ -10,7 +10,7 @@ export function fetchLatest() {
             .once('value', snap => {
               const ids = snap.val();
               dispatch({ type: types.LATEST_SUCCESS, payload: ids });
-              this._onFetchLatest(ids)
+              _onFetchLatest(ids)
             });
   }
 }
