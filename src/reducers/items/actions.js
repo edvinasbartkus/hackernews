@@ -2,16 +2,16 @@ import Firebase from './../../utils/Firebase';
 import * as types from './types';
 import _ from 'underscore';
 import Promise from 'bluebird';
+import request from 'superagent';
 
 export function fetchLatest() {
   return dispatch => {
     dispatch({ type: types.LATEST_FETCH })
-    Firebase.database()
-            .ref('v0/newstories')
-            .once('value', snap => {
-              dispatch({ type: types.RESET });
-              _handleIds(dispatch, snap.val());
-            });
+    request('GET', 'https://hacker-news.firebaseio.com/v0/newstories.json')
+      .end((err, res) => {
+        dispatch({ type: types.RESET });
+        _handleIds(dispatch, res.body);
+      });
   }
 }
 
@@ -43,15 +43,13 @@ export function _handleIds(dispatch, ids) {
 }
 
 function _fetchItem(dispatch, id, resolve) {
-  Firebase.database()
-          .ref('v0/item')
-          .child(id)
-          .once('value', snap => {
-            const item = snap.val();
-            if (item && !item.parent && item.title) {
-              dispatch({ type: types.ITEM_SUCCESS, payload: item });
-            }
+  request('GET', `https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+    .end((err, res) => {
+      const item = res.body;
+      if (item && !item.parent && item.title) {
+        dispatch({ type: types.ITEM_SUCCESS, payload: item });
+      }
 
-            resolve(item.id);
-          });
+      resolve(item.id);
+    });
 }
